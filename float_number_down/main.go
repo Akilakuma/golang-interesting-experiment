@@ -4,15 +4,19 @@ import (
 	"fmt"
 	"math"
 	"strconv"
+	"strings"
 )
 
 func main() {
-	test1()
-	test2()
+	// test1()
+	// test2()
+	// a := test3("123455.9823736", 2)
+	// fmt.Println(a)
+	test4()
 }
 
 func test1() {
-	origin := "18.9"
+	origin := "19.08"
 	originToFloat, _ := strconv.ParseFloat(origin, 64)
 	fmt.Println("原本的數字：")
 	fmt.Println(originToFloat)
@@ -35,8 +39,8 @@ func test1() {
 
 func test2() {
 	fmt.Println()
-	base := 10000000
-	origin := "18.9"
+	base := 1000000000000
+	origin := "19.08"
 	originToFloat, _ := strconv.ParseFloat(origin, 64)
 	fmt.Println("原本的數字：")
 	fmt.Println(originToFloat)
@@ -57,4 +61,46 @@ func test2() {
 	fmt.Println(d)
 	fmt.Println(e)
 	fmt.Println(f)
+}
+
+func test3(s string, length int) float64 {
+
+	// 有包含小數點才處理
+	if strings.Contains(s, ".") && length > 0 {
+		// 有小數點才切割
+		temp := strings.Split(s, ".")
+
+		rightOfDot := temp[1]
+		// 小數點右邊數字是否有超過指定長度
+		lenOfRight := len(rightOfDot)
+		if lenOfRight > length {
+			var downNumber string
+			// 小數點右邊數字 轉成 []string
+			floatNum := strings.Split(rightOfDot, "")
+			// 指定長度內的數字做字串相加
+			for k, v := range floatNum {
+				if k < length {
+					downNumber += v
+					k++
+				}
+			}
+			// 小數點左邊數字 + . + 小數點右邊指定長度內的數字
+			finalNum := temp[0] + "." + downNumber
+			f, _ := strconv.ParseFloat(finalNum, 64)
+			return f
+		}
+
+	}
+
+	i, _ := strconv.ParseFloat(s, 64)
+	return i
+}
+
+// 最終方案
+func test4() {
+	para := 18.9
+	a := strconv.FormatFloat(para, 'f', 2, 64)
+	fmt.Println(a)
+	b, _ := strconv.ParseFloat(a, 64)
+	fmt.Println(b)
 }
