@@ -12,7 +12,9 @@ func main() {
 	// test2()
 	// a := test3("123455.9823736", 2)
 	// fmt.Println(a)
-	test4()
+	// test4()
+	b := Floor(123.0049999, 2)
+	fmt.Println(b)
 }
 
 func test1() {
@@ -103,4 +105,27 @@ func test4() {
 	fmt.Println(a)
 	b, _ := strconv.ParseFloat(a, 64)
 	fmt.Println(b)
+}
+
+// Floor 無條件捨去小數第N位
+func Floor(number float64, N int) (floorNumber float64) {
+	pow := math.Pow10(N)
+	floorNumber = math.Floor(Round(number*pow, 4)) / pow
+	return
+}
+
+// Ceil 無條件進位小數第N位
+func Ceil(number float64, N int) (floorNumber float64) {
+	pow := math.Pow10(N)
+	floorNumber = math.Ceil(Round(number*pow, 4)) / pow
+	return
+}
+
+// Round 四捨五入小數第N位
+func Round(number float64, N int) float64 {
+	var pow float64 = 1
+	for i := 0; i < N; i++ {
+		pow *= 10
+	}
+	return float64(int((number*pow)+0.5)) / pow
 }
