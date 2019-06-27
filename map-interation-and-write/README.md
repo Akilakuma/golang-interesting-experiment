@@ -6,5 +6,5 @@
 
 
 # 結論
-1.即使並非sync.Map，使用原本的map，當然也有concurrent map iteration and map write的問題發生。
-1.當有不同的gorutine，一個在對map做interation，一個在對map寫入，就會出事，當然兩邊都有加上lock可以避免錯誤，但是否是想要的請斟酌這樣使用。
+1. 即使並非sync.Map，使用原本的map，當然也有concurrent map iteration and map write的問題發生。
+1. 當有不同的gorutine，一個在對map做interation，一個在對map寫入，就會出事，當然兩邊都有加上lock可以避免錯誤，但是否是想要的請斟酌這樣使用。
