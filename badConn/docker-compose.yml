@@ -1,0 +1,66 @@
+version: '2'
+
+services:
+  # MySQL
+    mysql:
+      image: mysql:5.7
+      restart: always
+      ports:
+          - "3306:3306"
+      volumes:
+          - db:/var/lib/mysql
+      environment:
+          MYSQL_USER: root
+          MYSQL_ROOT_PASSWORD: qwe123
+          MYSQL_DATABASE: badbadtest
+      networks:
+          - internal_network
+    # Redis
+    redis:
+      image: redis
+      restart: always
+      ports:
+          - "6379:6379"
+      volumes:
+          - cache:/data
+      networks:
+          - internal_network
+
+    # MySQL IDE 介面
+    db-adminer:
+      image: phpmyadmin/phpmyadmin
+      restart: always
+      environment:
+          PMA_HOSTS: mysql
+          PMA_PORT: 3306
+      ports:
+          - "3300:80"
+      networks:
+          - internal_network
+          - external_network
+      depends_on:
+          - mysql
+
+    # Redis IDE 介面
+    redis-admin:
+      image: jj891070/apache2-phpredisadmin
+      restart: always
+      ports:
+          - "3200:80"
+      environment:
+          - JAY_REDIS_HOSTS=redis
+      depends_on:
+          - redis
+      networks:
+          - internal_network
+          - external_network
+volumes:
+    cache:
+        driver: "local"
+    db:
+        driver: "local"
+networks:
+    internal_network:
+        driver: bridge
+    external_network:
+        driver: bridge
