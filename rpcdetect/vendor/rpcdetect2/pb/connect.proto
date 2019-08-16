@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package pb;
+
+service Connect {
+    rpc Ping (ConnRequest) returns (ConnResponse) {}
+}
+
+message ConnRequest {
+    int32 rand = 1;
+    string time_at = 2;
+}
+
+message ConnResponse {
+    int32 result = 1;
+}
