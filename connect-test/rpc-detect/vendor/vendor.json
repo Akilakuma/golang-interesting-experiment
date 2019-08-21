@@ -331,11 +331,6 @@
 			"path": "google.golang.org/grpc/tap",
 			"revision": "030824531b6588b2f7fb381c9efa96c560693b83",
 			"revisionTime": "2019-08-15T18:50:32Z"
-		},
-		{
-			"checksumSHA1": "t4euahn5WIeDl3tknHlqeP8qg4A=",
-			"path": "rpcdetect2/pb",
-			"revision": ""
 		}
 	],
 	"rootPath": "rpcdetect"

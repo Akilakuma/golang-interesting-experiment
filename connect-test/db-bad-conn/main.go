@@ -50,7 +50,6 @@ func main() {
 		}
 	}
 	log.Println("結束")
-
 }
 
 // InserData 寫資料進DB
