@@ -16,7 +16,7 @@ var wg sync.WaitGroup
 
 func main() {
 
-	const workNum = 60    // worker 數量: 同時呼叫API的數量
+	const workNum = 100    // worker 數量: 同時呼叫API的數量
 	const caseNum = 10000 // request 總量
 
 	tStart := time.Now()
@@ -38,6 +38,12 @@ func testAPI(workNum, caseNum int) {
 		wg.Add(1)
 		go func() {
 
+			// postRaw := map[string]interface{}{
+			// 	"game_id": 105,
+			// 	"ip":      "127.0.0.1",
+			// 	"session": "7923ab5adfcf0c03fa4f6599af1c99815d946da81eee7c2f802fee8a241732df",
+			// }
+
 			postRaw := map[string]interface{}{
 				"amount":     1,
 				"opcode":     10003,
@@ -48,9 +54,10 @@ func testAPI(workNum, caseNum int) {
 			para := bytes.NewBuffer(httpJSONRawBuild(postRaw))
 			tS := time.Now()
 			_, _, err := OnionConn.PostRaw("http://127.0.0.1/api/play/cash/increase", para)
+			// _, _, err := OnionConn.PostRaw("http://127.0.0.1/api/play/user/session", para)
 			tE := time.Now().Sub(tS)
 
-			// log.Println("花費時間：", tE)
+			log.Println("花費時間：", tE)
 			if tE > 2*time.Second {
 				log.Println("大於2秒")
 			}

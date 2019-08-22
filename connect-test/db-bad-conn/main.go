@@ -17,24 +17,42 @@ var (
 	m        = new(sync.RWMutex)
 )
 
+// DBInstance DB 連線實體
+var DBInstance = setConnect()
+
+// TimeMsg timer定時觸發
+func TimeMsg() {
+
+	d := time.Duration(time.Millisecond * 100)
+	t := time.NewTicker(d)
+	defer t.Stop()
+
+	for {
+		<-t.C
+		showDBProcesslist()
+	}
+}
+
 func main() {
 
 	log.Println(runtime.Version())
 
-	// queryStr := `create table if not exists  badRecord66(
-	// 		id INT NOT NULL AUTO_INCREMENT,
-	// 		tutorial_title VARCHAR(100) NOT NULL,
-	// 		tutorial_author VARCHAR(40) NOT NULL,
-	// 		serial INT NOT NULL,
-	// 		PRIMARY KEY ( id )
-	// 	)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1; `
-	// DBInstance.Exec(queryStr)
+	queryStr := `create table if not exists  badRecord66(
+			id INT NOT NULL AUTO_INCREMENT,
+			tutorial_title VARCHAR(100) NOT NULL,
+			tutorial_author VARCHAR(40) NOT NULL,
+			serial INT NOT NULL,
+			PRIMARY KEY ( id )
+		)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1; `
+	DBInstance.Exec(queryStr)
+
+	go TimeMsg()
 
 	var (
 		wg sync.WaitGroup
 	)
 	// 總共一萬次
-	for i := 0; i < 10000; i++ {
+	for i := 0; i < 2000; i++ {
 
 		// 每次起2000個gorutine去下語法
 		for j := 0; j < 2000; j++ {
@@ -66,9 +84,6 @@ func InserData(serial int, wg *sync.WaitGroup) {
 	wg.Done()
 }
 
-// DBInstance DB 連線實體
-var DBInstance = setConnect()
-
 // Connection pool
 func setConnect() *sql.DB {
 	con := "root:qwe123@tcp(127.0.0.1:3306)/badbadtest"
@@ -79,10 +94,10 @@ func setConnect() *sql.DB {
 	}
 
 	// Connection limit
-	// db.SetMaxIdleConns(1)
-	db.SetMaxOpenConns(50)
+	db.SetMaxIdleConns(10)
+	db.SetMaxOpenConns(30)
 
-	// db.SetConnMaxLifetime(3 * time.Second) // 3s
+	db.SetConnMaxLifetime(30 * time.Second) // 3s
 	// db.SetConnMaxLifetime(180) // 180 ns
 
 	return db

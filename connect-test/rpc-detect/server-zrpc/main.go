@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"log"
-	"rpc-detect/pb"
+	"connect-test/rpc-detect/pb"
 	"time"
 
 	"github.com/yam8511/zrpc"
